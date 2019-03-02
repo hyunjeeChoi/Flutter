@@ -1,67 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:english_words/english_words.dart';
 
-void main() {
-  runApp(new RotationIconApp());
-}
+void main() => runApp(MyApp());
+/*
+아래처럼도 할 수 있음
+* void main() {
+*   runApp(new MyApp());
+* }
+*
+* */
 
-class RotationIconApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  //StatelessWidget 으로 widget 생성
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Flutter Demo',
-      theme: new ThemeData(
-        primarySwatch: Colors.red,
+    return MaterialApp(
+        title: 'Startup Name Generator',
+        home: RandomWords());
+  }
+}
+
+class RandomWordsState extends State<RandomWords> {
+  final _suggestions = <WordPair>[];
+  final _biggerFont = const TextStyle(fontSize: 18.0);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Startup Name Generator'),
       ),
-      home: new MyHomePage(title: 'icon rotation'),
+      body: _buildSuggestions()
+    );
+/*    final wordPair = WordPair.random();
+    return Text(wordPair.asPascalCase);*/
+  }
+
+  Widget _buildSuggestions() {
+    return ListView.builder(
+        padding: const EdgeInsets.all(16.0),
+        itemBuilder: (context, i) {
+          if (i.isOdd) return Divider();
+
+          final index = i ~/ 2;
+          if (index >= _suggestions.length) {
+            _suggestions.addAll(generateWordPairs().take(10));
+          }
+          return _buildRow(_suggestions[index]);
+        });
+  }
+
+  Widget _buildRow(WordPair pair) {
+    return ListTile(
+      title: Text(
+        pair.asPascalCase,
+        style: _biggerFont,
+      ),
     );
   }
 }
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
 
-  final String title;
-
+class RandomWords extends StatefulWidget {
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  var _position = 0.0;
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
-      ),
-      body: new Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Slider(
-              value: _position,
-              onChanged: (var position) {
-                setState(() {
-                  _position = position;
-                });
-              }
-            ),
-
-          new Transform.rotate(
-            angle: _position * 2 * 3.14,
-            child: new Icon(Icons.android),
-          ),
-          new Transform.rotate(
-            angle: _position * -2 * 3.14,
-            child: new Icon(Icons.android),
-          )
-/*            new Icon(Icons.android),
-            new Icon(Icons.android),*/
-          ],
-      ),
-      )
-/*      body: new Center(
-        child: new Icon(Icons.android),
-      ),*/
-    );
+  State<StatefulWidget> createState() {
+    return new RandomWordsState();
   }
+/*
+  * RandomWordsState createState() => new RandomWordsState();
+  * */
 }
