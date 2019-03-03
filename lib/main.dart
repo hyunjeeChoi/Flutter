@@ -1,71 +1,43 @@
-import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
+void printMsg(String msg, [String value='undefiend']) {
+  print('msg = $msg, value = $value');
+}
 
-void main() => runApp(MyApp());
-/*
-아래처럼도 할 수 있음
-* void main() {
-*   runApp(new MyApp());
-* }
-*
-* */
+double add(double a, double b) => a+b;
 
-class MyApp extends StatelessWidget {
-  //StatelessWidget 으로 widget 생성
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Startup Name Generator',
-        home: RandomWords());
+void printList(List<int> list) {
+  for(var i=0; i<list.length; i++) {
+    print(i);
   }
 }
 
-class RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Startup Name Generator'),
-      ),
-      body: _buildSuggestions()
-    );
-/*    final wordPair = WordPair.random();
-    return Text(wordPair.asPascalCase);*/
-  }
-
-  Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: (context, i) {
-          if (i.isOdd) return Divider();
-
-          final index = i ~/ 2;
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10));
-          }
-          return _buildRow(_suggestions[index]);
-        });
-  }
-
-  Widget _buildRow(WordPair pair) {
-    return ListTile(
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
-      ),
-    );
-  }
+void usingForEach(List<int> list) {
+  list.forEach((x) {
+    print(x);
+  });
 }
 
-class RandomWords extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return new RandomWordsState();
-  }
-/*
-  * RandomWordsState createState() => new RandomWordsState();
-  * */
+void main() {
+  var test = "test";
+  print('test= $test');
+  printMsg('1234', '5678');
+  printMsg('1234');
+
+  List<int> list = [2,1,5];
+  list.add(4);
+  print(list);
+  print(list[0]);
+
+  print('usingFor');
+  printList(list);
+
+  print('usingForEach');
+  usingForEach(list);
+
+  Map<String, int> cats = {
+    'ABC': 1,
+    'DEF': 2
+  };
+
+  print(cats);
+
 }
